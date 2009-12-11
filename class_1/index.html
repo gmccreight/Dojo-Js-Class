@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <script type="text/javascript" src="jquery.js"></script>
+    <link rel="stylesheet" href="reset.css" type="text/css" media="screen" charset="utf-8">
+    <link rel="stylesheet" href="styles.css" type="text/css" media="screen" charset="utf-8">
+    <!-- Additional styles will go here -->
+    <style type="text/css" media="screen">
+      
+      
+      
+    </style>
+  </head>
+  <body>
+
+    <!-- This is where the blog posts will go -->
+    <div id="posts">
+      <div class="post">
+        <div class="title">Title</div>
+        <p class="content">lorem ipsum</p>
+        <div class="author">Author</div>
+      </div>
+    </div>
+    
+    <!-- Javascript logic goes here -->
+    <script type="text/javascript" charset="utf-8">
+      (function() {
+        var undefined;
+        $.getJSON("http://dojoclass.appspot.com/index?callback=?", function(data) {
+          $.each(data, function(i, elem) {
+            var post = $('<div class="post">');
+            var title = $('<div class="title">');
+            var content = $('<p class="content">');
+            var author = $('<div class="author">');
+            title.append(elem.title);
+            content.append(elem.content);
+            author.append(elem.author);
+            post.append(title).append(content).append(author);
+            $('#posts').append(post);
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
