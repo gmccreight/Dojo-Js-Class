@@ -1,0 +1,18 @@
+.post {
+  border: 1px solid #eee;
+  padding: 5px;
+  margin: 5px;
+}
+.title {
+  font-size: 150%;
+  font-weight: bold;
+  font-family: times-new-roman, serif;
+}
+.content {
+  font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+}
+.author {
+  font-size: 80%;
+  font-style: oblique;
+  font-family: times-new-roman, serif;
+}
