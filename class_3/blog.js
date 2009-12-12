@@ -1,6 +1,6 @@
 (function() {
   var undefined;
-  
+
   function getUrl(action, nameValuePairs, key) {
     nameValuePairs = nameValuePairs || [];
     if (key) {
@@ -8,7 +8,7 @@
     }
     return "http://dojoclass.appspot.com/"+action+"?callback=?&"+$.param(nameValuePairs);
   }
-  
+
   function SavedPost(json) {
     var self = this;
     this.html = $('<div class="post">');
@@ -23,6 +23,7 @@
     this.data = json;
     this.view();
   }
+
   $.extend(SavedPost.prototype, {
     view: function() {
       this.editing = false;
@@ -32,7 +33,7 @@
       this.author.empty().text(this.data.author);
       this.content.empty().text(this.data.content);
     },
-    
+
     save: function() {
       var self = this;
       $.getJSON(getUrl('update', this.html.find(":input").serializeArray(), this.data.key), function(data) {
@@ -40,14 +41,14 @@
         self.view();
       });
     },
-    
+
     destroy: function() {
       var self = this;
       $.getJSON(getUrl('destroy', null, this.data.key), function() {
         self.html.remove();
       });
     },
-    
+
     edit: function() {
       var self = this;
       if (!this.editing) {
@@ -67,7 +68,7 @@
       }
     }
   });
-  
+
   function BlogController(selector) {
     var self = this;
     this.blog = $(selector);
@@ -81,7 +82,7 @@
       }
     });
   }
-  
+
   $.extend(BlogController.prototype, {
     list: function(){
       var self = this;
@@ -93,7 +94,7 @@
         });
       });
     },
-    
+
     create: function() {
       var self = this;
       $.getJSON(getUrl('create', self.form.serializeArray()), function(json) {
