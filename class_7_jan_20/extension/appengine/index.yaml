@@ -1,0 +1,6 @@
+indexes:
+  - kind: JobPosting
+    properties:
+    - name: email_hash
+    - name: created
+      direction: desc

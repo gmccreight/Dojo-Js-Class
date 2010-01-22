@@ -1,0 +1,60 @@
+require 'erb'
+require 'rake'
+
+APP_NAME = "dojo"
+CHROME_PROVIDERS = ["content", "locale", "skin", "defaults"]
+ROOT_FILES = ["install.rdf", "chrome.manifest", "modules"]
+BUILD_DIR = "/tmp/ff_build"
+JAR_FILE = "#{APP_NAME}.jar"
+DESKTOP_DIR = "/Users/catch23/Desktop"
+
+task :default => [:build]
+
+task :clean do
+  puts "Cleaning the build directories..."
+  rm_rf "#{BUILD_DIR}"
+end
+
+desc "build the xpi"
+task :build => [:clean] do
+  cd File.dirname(__FILE__)
+  chrome = "#{BUILD_DIR}/chrome"
+  mkdir_p chrome
+
+  CHROME_PROVIDERS.each do |chrome_provider|
+    cp_r chrome_provider, chrome
+  end
+
+  ROOT_FILES.each do |file|
+    cp_r file, BUILD_DIR
+  end
+
+  Dir["#{BUILD_DIR}/**/.svn"].each do |file|
+    rm_rf file
+  end
+
+  puts "Generating jar file..."
+  cd chrome do
+    chrome_files = Dir['./**/*']
+    files_to_add = chrome_files.select{|f| File.file?(f) && !(f =~ /\.svn/) && !(f =~ /\.erb/)}
+    system("zip -0 -r #{JAR_FILE} #{files_to_add.join(' ')}")
+    # remove all directories in chrome except the jar file
+    Dir['*'].each {|directory| rm_rf(directory) unless File.file?(directory)} 
+  end
+  raise "missing zip file!" unless File.exist?("#{BUILD_DIR}/chrome/#{JAR_FILE}")
+
+  manifest = File.open("#{BUILD_DIR}/chrome.manifest", "w+")
+  manifest_contents = File.open("chrome.manifest").readlines.each do |line|
+    line.strip!
+    line.gsub!(/^(content\s+\S*\s+)(\S*\/)$/, "\\1jar:chrome/#{APP_NAME}.jar!/\\2")
+    line.gsub!(/^(skin|locale)(\s+\S*\s+\S*\s+)(.*\/)$/, "\\1\\2jar:chrome\/#{APP_NAME}.jar!/\\3")
+    manifest.puts line
+  end
+  manifest.close
+
+  puts "Generating xpi"
+  cd BUILD_DIR do
+    system "zip -r #{APP_NAME}.xpi ."
+    cp "#{APP_NAME}.xpi", DESKTOP_DIR
+  end
+end

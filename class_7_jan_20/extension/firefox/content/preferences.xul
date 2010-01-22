@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://hackerfair/skin/preferences.css" type="text/css"?>
+<!DOCTYPE window SYSTEM "chrome://hackerfair/locale/preferences.dtd">
+
+
+<prefwindow id="hackerfair-prefs"
+            xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+            oncommand="HackerFair_Prefs.action(event);"
+            oninput="HackerFair_Prefs.action(event);"
+            onload="HackerFair_Prefs.load();"
+            onunload="HackerFair_Prefs.unload();"
+            buttons=",">
+
+  <script type="application/x-javascript" src="chrome://hackerfair/content/constants.js" />
+            
+  <keyset id="hackerfair-prefs-keys">
+    <key keycode="VK_ESCAPE" oncommand="HackerFair_Prefs.cancel();" />
+    <key keycode="VK_RETURN" oncommand="HackerFair_Prefs.okay();" />
+  </keyset>
+
+  <prefpane id="hackerfair-prefs-pane" label="&title.label;">
+    <preferences>
+    </preferences>
+
+    <hbox flex="1">
+      <vbox flex="1">
+        <vbox>
+          <description value="Email: (only used to remember who you are)"/>
+        </vbox>
+        <textbox id="hackerfair-prefs-email" label="Email:"/>
+        <vbox>
+          <description value="Body Template: "/>
+        </vbox>
+        <textbox id="hackerfair-prefs-body-template" label="Body Template:" multiline="true"/>
+        
+        <hbox align="right" id="hackerfair-buttons">
+          <button label="Cancel"
+                  oncommand="HackerFair_Prefs.cancel();" />
+
+          <button label="OK"
+                  default="true"
+                  oncommand="HackerFair_Prefs.okay();" />
+        </hbox>
+      </vbox>
+    </hbox>
+  </prefpane>
+  
+  
+  <script type="application/x-javascript" src="chrome://hackerfair/content/preferences.js" />
+</prefwindow>
+

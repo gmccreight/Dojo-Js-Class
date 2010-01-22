@@ -1,0 +1,8 @@
+content	hackerfair	content/
+overlay	chrome://browser/content/browser.xul	chrome://hackerfair/content/overlay.xul
+resource hackerfairmods ./
+
+locale	hackerfair	en-US	locale/en-US/
+
+skin	hackerfair	classic/1.0	skin/
+style	chrome://global/content/customizeToolbar.xul	chrome://hackerfair/skin/overlay.css

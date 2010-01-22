@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://dojo/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://dojo/locale/overlay.dtd">
+
+<overlay id="dojo-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script type="application/x-javascript" src="chrome://dojo/content/jquery.js" />
+  <script type="application/x-javascript" src="chrome://dojo/content/jquery_noconflict.js" />
+  <script type="application/x-javascript" src="chrome://dojo/content/overlay.js" />
+  <script type='application/x-javascript' src='chrome://dojo/content/xmlhttprequester.js'/>
+  <script type='application/x-javascript' src='chrome://dojo/content/script-compiler.js'/>
+  
+  <statusbar id="status-bar">
+      <statusbarpanel id="dojo-bar-panel" context="dojoStatusContextMenu" onclick="DojoPlugin.visitHome(event);">
+          <image id="dojoStatusIcon" tooltiptext="Hacker Dojo Homepage"/>
+      </statusbarpanel>
+      <menupopup id="dojoStatusContextMenu">
+        <menuitem label="Home" oncommand="DojoPlugin.visitHome();"/>
+      </menupopup>
+  </statusbar>
+</overlay>

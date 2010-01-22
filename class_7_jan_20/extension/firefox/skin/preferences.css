@@ -1,0 +1,21 @@
+#hackerfair-prefs-pane {
+  position: relative;
+}
+#hackerfair-prefs {
+  width: 400px;
+  height: 300px;
+}
+
+#hackerfair-buttons {
+  text-align: right;
+  padding: 0;
+  margin: 0;
+}
+#hackerfair-buttons button {
+  margin-left: 8px;
+}
+
+#hackerfair-prefs-body-template {
+  height: 150px;
+  width: 300px;
+}

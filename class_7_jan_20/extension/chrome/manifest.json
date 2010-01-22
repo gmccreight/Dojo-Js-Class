@@ -1,0 +1,21 @@
+{
+  "name": "Craigslist Job Helper",
+  "version": "1.0",
+  "description": "Organize your job hunt on craigslist",
+  "content_scripts": [
+      {"matches": ["http://*.craigslist.org/*"], 
+       "js": ["javascript/jquery.js", 
+              "javascript/jquery_noconflict.js", 
+              "google/chrome_api.js", 
+              "javascript/craigslist.js"], 
+       "run_at": "document_end"
+      }
+    ],
+  "background_page": "background.html",
+  "browser_action": {
+      "default_icon": "images/hdlogo.png",
+      "default_title": "Craigslist Job Helper",
+      "popup": "popup.html"
+    },
+  "permissions": ["http://craigslistjobhelper.appspot.com/*", "tabs"]
+}

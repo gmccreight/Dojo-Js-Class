@@ -1,0 +1,115 @@
+require 'erb'
+require 'rake'
+require 'crxmake'
+
+APP_NAME = "hackerfair"
+CHROME_PROVIDERS = ["content", "skin", "locale"]
+ROOT_FILES = ["install.rdf", "chrome.manifest", "modules"]
+BUILD_DIR = "/tmp/extension_builds"
+HOME = ENV['HOME']
+JAR_FILE = "#{APP_NAME}.jar"
+PACKAGE_DIR = File.dirname(__FILE__) + "/packages"
+
+def templatize(template_file, output_file)
+  data = ERB.new(open(template_file).readlines.join)
+  file = open(output_file, "w+")
+  file.puts data.result(binding)
+  file.close
+end
+
+task :default => [:clean, :firefox, :chrome]
+
+task :clean do
+  puts "Cleaning the build directories..."
+  rm_rf "#{BUILD_DIR}"
+  rm_rf PACKAGE_DIR
+  mkdir_p PACKAGE_DIR
+end
+
+desc "build the xpi"
+task :firefox do
+  cd File.dirname(__FILE__)
+  firefox_build_dir = "#{BUILD_DIR}/firefox"
+  mkdir_p firefox_build_dir
+  cd File.dirname(__FILE__) + "/firefox"
+  chrome = "#{firefox_build_dir}/chrome"
+  mkdir_p chrome
+
+  CHROME_PROVIDERS.each do |chrome_provider|
+    cp_r chrome_provider, chrome
+  end
+
+  ROOT_FILES.each do |file|
+    cp_r file, firefox_build_dir
+  end
+
+  Dir[File.dirname(__FILE__) + "/chrome/javascript/*.js"].each do |js|
+    cp js, "#{chrome}/content/"
+  end
+
+#  cp File.dirname(__FILE__) + "/firefox/content/jquery.js", "#{chrome}/content/"
+
+  puts "Generating jar file..."
+  cd chrome do
+    chrome_files = Dir['./**/*']
+    files_to_add = chrome_files.select{|f| File.file?(f) && !(f =~ /\.svn/) && !(f =~ /\.erb/)}
+    chrome_files.select{|f| File.file?(f) && f =~ /\.erb/}.each do |template|
+      output_file = template.gsub('.erb', '')
+      puts "Templatizing #{template} into #{output_file}"
+      templatize(template, output_file)
+      files_to_add << output_file
+    end
+    Dir["./**/*.erb"].each do |file|
+      rm_f file
+    end
+    system("zip -0 -r #{JAR_FILE} #{files_to_add.join(' ')}")
+
+    # remove all directories in chrome except the jar file
+    Dir['*'].each {|directory| rm_rf(directory) unless File.file?(directory)} 
+  end
+  raise "missing zip file!" unless File.exist?("#{firefox_build_dir}/chrome/#{JAR_FILE}")
+
+  manifest = File.open("#{firefox_build_dir}/chrome.manifest", "w+")
+  manifest_contents = File.open("chrome.manifest").readlines.each do |line|
+    line.strip!
+    line.gsub!(/^(content\s+\S*\s+)(\S*\/)$/, "\\1jar:chrome/#{APP_NAME}.jar!/\\2")
+    line.gsub!(/^(skin|locale)(\s+\S*\s+\S*\s+)(.*\/)$/, "\\1\\2jar:chrome\/#{APP_NAME}.jar!/\\3")
+    manifest.puts line
+  end
+  manifest.close
+
+  puts "Generating xpi"
+  cd firefox_build_dir do
+    system "zip -r #{APP_NAME}.xpi ."
+    cp "#{APP_NAME}.xpi", PACKAGE_DIR
+  end
+end
+
+task :chrome do
+  cd File.dirname(__FILE__)
+  cp_r File.dirname(__FILE__) + "/chrome", BUILD_DIR
+  chrome_build_dir = "#{BUILD_DIR}/chrome"
+  mkdir_p PACKAGE_DIR
+  mkdir_p chrome_build_dir
+  
+  puts "Generating crx file..."
+  CrxMake.make(
+    :ex_dir => chrome_build_dir,
+    :pkey   => "./chrome.pem",
+    :crx_output => "#{PACKAGE_DIR}/#{APP_NAME}.crx",
+    :verbose => true,
+    :ignorefile => /\.swp/,
+    :ignoredir => /\.(?:svn|git|cvs|DS_Store)/
+  )
+
+  puts "Generating zip file for Google extensions gallery..."
+  CrxMake.zip(
+    :ex_dir => chrome_build_dir,
+    :pkey   => "./chrome.pem",
+    :zip_output => "#{PACKAGE_DIR}/#{APP_NAME}.zip",
+    :verbose => true,
+    :ignorefile => /\.swp/,
+    :ignoredir => /\.(?:svn|git|cvs|DS_Store)/
+  )
+end
+

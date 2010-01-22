@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://hackerfair/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://hackerfair/locale/overlay.dtd">
+
+<overlay id="hackerfair-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script type="application/x-javascript" src="chrome://hackerfair/content/jquery.js" />
+  <script type="application/x-javascript" src="chrome://hackerfair/content/jquery_noconflict.js" />
+  <script type='application/x-javascript' src='chrome://hackerfair/content/md5.js'/>
+  <script type='application/x-javascript' src='chrome://hackerfair/content/constants.js'/>
+  <script type='application/x-javascript' src='chrome://hackerfair/content/hackerfair_helper.js'/>
+  <script type='application/x-javascript' src='chrome://hackerfair/content/xmlhttprequester.js'/>
+  <script type='application/x-javascript' src='chrome://hackerfair/content/script-compiler.js'/>
+  <script type="application/x-javascript" src="chrome://hackerfair/content/overlay.js" />
+  
+  <statusbar id="status-bar">
+      <statusbarpanel id="hackerfair-bar-panel" context="hackerfairStatusContextMenu">
+          <image id="hackerfairStatusIcon" tooltiptext="HackerFair"/>
+      </statusbarpanel>
+      <menupopup id="hackerfairStatusContextMenu">
+        <menuitem label="Preferences..." oncommand="HackerFairPlugin.openPreferences();"/>
+      </menupopup>
+  </statusbar>
+</overlay>

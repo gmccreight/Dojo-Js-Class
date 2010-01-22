@@ -1,0 +1,29 @@
+<html>
+  <script src="javascript/jquery.js" type="text/javascript"></script>
+  <script src="javascript/jquery_noconflict.js" type="text/javascript"></script>
+  <script src="javascript/constants.js" type="text/javascript"></script>
+  <script src="javascript/md5.js" type="text/javascript"></script>
+  <script src="google/chrome_api.js" type="text/javascript"></script>
+  <script src="javascript/hackerfair_helper.js" type="text/javascript"></script>
+  <script>
+    window.fairhelper = new HackerFairHelper(localStorage[Constants.EMAIL]);
+
+    chrome.extension.onRequest.addListener(
+      function(request, sender, sendResponse) {
+        if (request.update_email) {
+          window.fairhelper.setEmail(localStorage[Constants.EMAIL]);
+          sendResponse({done: true});
+        } else if (request.update) {
+          window.fairhelper.update();
+          sendResponse({done: true});
+        } else if (request.get_visited) {
+          sendResponse({visited: window.fairhelper.getVisitedUrls()});
+        } else if (request.open_mail) {
+          var body = localStorage[Constants.BODY_TEMPLATE];
+          ExtensionAPI.visitUrl(window.fairhelper.getMailUrl(request.contact_email, request.subject, body, request.url));
+          sendResponse({done: true});
+        }
+      }
+    );
+  </script>
+</html>

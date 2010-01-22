@@ -1,0 +1,1 @@
+$dojoJQ('h1:first').html("Hacker Dojo Example");

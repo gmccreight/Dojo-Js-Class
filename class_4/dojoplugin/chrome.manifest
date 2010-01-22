@@ -1,0 +1,8 @@
+content	dojo	content/
+overlay	chrome://browser/content/browser.xul	chrome://dojo/content/overlay.xul
+resource dojoresource ./
+
+locale	dojo	en-US	locale/en-US/
+
+skin	dojo	classic/1.0	skin/
+style	chrome://global/content/customizeToolbar.xul	chrome://dojo/skin/overlay.css

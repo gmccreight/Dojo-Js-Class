@@ -1,0 +1,52 @@
+8
+
+dir
+2312
+svn+ssh://presdo.net/var/repos/presdo/trunk/tools/ffv1/locale/en-US
+svn+ssh://presdo.net/var/repos/presdo
+
+
+
+2008-09-13T05:06:59.699622Z
+1984
+dean
+
+
+svn:special svn:externals svn:needs-lock
+
+help.dtd
+file
+
+
+
+
+2008-09-11T19:55:50.000000Z
+d41d8cd98f00b204e9800998ecf8427e
+2008-09-13T05:06:59.699622Z
+1984
+dean
+
+overlay.dtd
+file
+
+
+
+
+2008-09-11T19:55:50.000000Z
+9832e3153b082717773f95a0d2c8b095
+2008-09-13T05:06:59.699622Z
+1984
+dean
+
+preferences.dtd
+file
+
+
+
+
+2008-09-11T19:55:50.000000Z
+d3f35a106dea29150674ddd0cdf3ded8
+2008-09-13T05:06:59.699622Z
+1984
+dean
+

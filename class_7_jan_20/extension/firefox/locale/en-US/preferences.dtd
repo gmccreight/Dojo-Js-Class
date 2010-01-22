@@ -1,0 +1,7 @@
+<!ENTITY title.label "Craigslist Email Preferences">
+<!ENTITY options.label "Options">
+<!ENTITY username.label "Username:">
+<!ENTITY password.label "Password:">
+<!ENTITY close.button "Close">
+<!ENTITY ok.button "OK">
+<!ENTITY apply.button "Apply">
